@@ -1,0 +1,16 @@
+[project]
+name = "offtoot"
+version = "0.1"
+authors = [
+	{ name="Siroj42", email="siroj42@t-online.de" },
+]
+description = "Offline mastodon reader"
+readme = "README.md"
+requires-python = ">=3.11"
+
+[project.scripts]
+offtoot = "offtoot:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
