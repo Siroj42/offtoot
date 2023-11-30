@@ -1,8 +1,12 @@
 from pathlib import Path
 
-TOKEN_LOCATION: Path = Path.home() / ".local/share/passwords/offtoot/token"
-URL_LOCATION: Path = Path.home() / ".local/share/passwords/offtoot/url"
+CONFIG_LOCATION: Path = Path.home() / ".config/offtoot"
+TOKEN_LOCATION: Path = CONFIG_LOCATION / "token"
+URL_LOCATION: Path = CONFIG_LOCATION / "url"
+APP_LOCATION: Path = CONFIG_LOCATION / "app"
 STATE_LOCATION: Path = Path.home() / ".local/share/offtoot"
-STORAGE_LOCATION: Path = STATE_LOCATION / "store"
+STORAGE_LOCATION: Path = Path.home() / ".cache/offtoot"
 
+CONFIG_LOCATION.mkdir(parents=True, exist_ok=True)
 STATE_LOCATION.mkdir(parents=True, exist_ok=True)
+STORAGE_LOCATION.mkdir(parents=True, exist_ok=True)

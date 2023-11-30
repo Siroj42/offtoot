@@ -10,7 +10,7 @@
     flake-utils.lib.eachDefaultSystem (system:
       let 
 				pkgs = nixpkgs.legacyPackages.${system}; 
-				pythonDeps = p: with p; [ mastodon-py hatchling dataclasses-json ];
+				pythonDeps = p: with p; [ mastodon-py hatchling dataclasses-json beautifulsoup4 types-beautifulsoup4 ]; #Note: types module should be removed in a final build, it's only useful for development
 			in {
         packages = rec {
           offtoot = pkgs.callPackage ./package.nix { inherit pythonDeps; };

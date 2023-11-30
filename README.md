@@ -4,14 +4,17 @@ A command line mastodon client inspired by [offpunk](https://sr.ht/~lioploum/off
 
 ## Roadmap
 
-- [] Login & automatically generate secret
-    - [] Proper Secret storage implementation
-- [] Actually render the bit of html in most posts, especially with links and hashtags
+- [x] Login & automatically generate secret
+  - [] Proper (meaning more secure) Secret storage implementation
+- [x] Actually render the bit of html in most posts, especially with links and hashtags
+  - [x] Offpunk-style links & hashtags
 - [] Ability to delete old entries
 - [] Looking up if posts in current tour have been edited
 - [] Sync depth (=comments/posts that the downloaded post is a reply to)
-- [] Prettier output
+- [x] Prettier output
 - [] Image downloading
 - [] Image viewing
 - [] Guides
 - [] Outbox / Creating posts
+- [] Fetch-later list
+  - [] Add posts from tour that were not found to fetch-later
