@@ -12,8 +12,10 @@ A command line mastodon client inspired by [offpunk](https://sr.ht/~lioploum/off
 - [] Looking up if posts in current tour have been edited
 - [] Sync depth (=comments/posts that the downloaded post is a reply to)
 - [x] Prettier output
-- [] Image downloading
-- [] Image viewing
+- [x] Image handling
+  - [x] Image downloading
+  - [] Inline Image viewing
+    - [] Nix packaging for chafa.py
 - [] Guides
 - [] Outbox / Creating posts
 - [] Fetch-later list

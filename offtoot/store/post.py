@@ -1,11 +1,13 @@
 from dataclasses import dataclass, field
 from dataclasses_json import dataclass_json
+from typing import List
 from datetime import datetime
 from pathlib import Path
 import json
 from offtoot.store.config import STORAGE_LOCATION
 
 from offtoot.store.account import Account
+from offtoot.store.media import Media
 
 @dataclass_json
 @dataclass
@@ -63,7 +65,10 @@ class Status:
             reblogs = m["reblogs_count"],
             replies = m["replies_count"],
         )
-        return Post(created_at, account, id, content, url, status, stats)
+        media = []
+        for media_attachment in m["media_attachments"]:
+            media.append(Media.from_mastodon(media_attachment))
+        return Post(created_at, account, id, content, url, status, stats, media)
 
     def save(self):
         assert type(self.account) == Account
@@ -93,6 +98,7 @@ class Post(Status):
     url: str = ""
     status: PostInteraction = field(default_factory=PostInteraction)
     stats: PostInteractionStats = field(default_factory=PostInteractionStats)
+    media: List[Media] = field(default_factory=list)
 
     @classmethod
     def from_stub(cls, stub: "PostStub") -> "Post":

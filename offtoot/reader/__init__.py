@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup, Tag
 
 from offtoot.store.post import Post, Reblog, Status
 from offtoot.store.account import Account
+from offtoot.reader.media import display_media
 from typing import List, Tuple
 
 def sanitize_html(text: str, indent: int) -> Tuple[List[str], List[str]]:
@@ -92,6 +93,10 @@ def print_status(status: Status, indent: int = 0):
             for l in text:
                 print(l)
         sep()
+        if len(status.media) > 0:
+            for media_item in status.media:
+                display_media(media_item)
+            sep()
         if len(links) > 0:
             for i in range(len(links)):
                 print("[{}] {}".format(i+1, links[i]))
@@ -116,8 +121,11 @@ def list_new():
 
 def tour():
     tour = read_tour()
-    show_post_from_tour(tour.pop())
-    write_tour(tour)
+    if len(tour) > 0:
+        show_post_from_tour(tour.pop())
+        write_tour(tour)
+    else:
+        print("Tour is empty!")
 
 def main(argv):
     if len(argv) == 0:

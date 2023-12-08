@@ -14,9 +14,11 @@ def sync():
 
     tour = read_tour()
 
+    print("Fetching home timeline...")
     home_timeline = m.timeline_home(since_id=since_id)
     statuses: List[Status] = []
     for x in home_timeline:
+        print("Fetching status {}/{}".format(len(statuses)+1, len(home_timeline)))
         status = Status.from_mastodon(x)
         statuses.append(status)
 

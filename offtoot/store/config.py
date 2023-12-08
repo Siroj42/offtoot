@@ -10,3 +10,6 @@ STORAGE_LOCATION: Path = Path.home() / ".cache/offtoot"
 CONFIG_LOCATION.mkdir(parents=True, exist_ok=True)
 STATE_LOCATION.mkdir(parents=True, exist_ok=True)
 STORAGE_LOCATION.mkdir(parents=True, exist_ok=True)
+
+MAX_MEDIA_LEVEL = 0
+MEDIA_SIZE = "preview"
