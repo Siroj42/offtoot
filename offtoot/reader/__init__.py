@@ -1,6 +1,6 @@
 from os import get_terminal_size
-from offtoot.store.config import STORAGE_LOCATION
-from offtoot.store.lists import read_tour, write_tour
+from offtoot.store.config import STATE_LOCATION
+from offtoot.store.lists import read_tour, write_tour, get_post_from_tour_format
 from unicodedata import east_asian_width
 from bs4 import BeautifulSoup, Tag
 
@@ -56,9 +56,9 @@ def sanitize_html(text: str, indent: int) -> Tuple[List[str], List[str]]:
 def get_account_displayname(account: Account) -> str:
     return str(account.display_name or account.acct)
 
-def sep():
+def sep(char="-"):
     width = get_terminal_size().columns
-    print("-"*width)
+    print(char*width)
 
 # Helps properly judge the width of emoji characters. Maybe not the most optimal/complete way to do that.
 def display_string_width(string: str) -> int:
@@ -103,13 +103,17 @@ def print_status(status: Status, indent: int = 0):
             sep()
     print("")
 
+def print_ancestors(status: Status):
+    if type(status) == Post:
+        ancestors = status.get_ancestor_list();
+        for ancestor in ancestors:
+            print_status(ancestor)
+    else:
+        print_status(status)
+
 def show_post_from_tour(p: str):
-    p = p.removesuffix("\n")
-    acct = p.split("::")[0]
-    id = p.split("::")[1]
-    path = STORAGE_LOCATION / acct / "posts" / "{}.json".format(id)
-    if path.exists():
-        status = Status.load(path)
+    status = get_post_from_tour_format(p)
+    if isinstance(status, Status):
         print_status(status)
     else:
         print("Post {} not available in store".format(p))
@@ -122,10 +126,45 @@ def list_new():
 def tour():
     tour = read_tour()
     if len(tour) > 0:
-        show_post_from_tour(tour.pop())
+        post = tour.pop()
+        show_post_from_tour(post)
+        write_current(post)
         write_tour(tour)
     else:
         print("Tour is empty!")
+
+def thread():
+    current = read_current()
+    if current:
+        post = get_post_from_tour_format(current)
+        assert type(post) == Post
+        if post:
+            print_ancestors(post)
+        p = post
+        assert type(p) == Post
+        def check_same_account(x):
+            assert type(x) == Post
+            return x.account==post.account
+        descendants = list(filter(check_same_account, p.descendants))
+        while len(descendants) > 0:
+            d = descendants.pop()
+            assert type(d) == Post
+            print_status(d)
+    else:
+        print("No current post!")
+
+def read_current() -> str:
+    current_file = STATE_LOCATION / "current"
+    current: str = ""
+    if current_file.exists():
+        with open(current_file, "r") as f:
+            current = f.read()
+    return current
+
+def write_current(current: str):
+    current_file = STATE_LOCATION / "current"
+    with open(current_file, "w+") as f:
+        f.write(current)
 
 def main(argv):
     if len(argv) == 0:
@@ -136,5 +175,7 @@ def main(argv):
             list_new()
         case "tour":
             tour()
+        case "thread":
+            thread()
         case _:
             print("Invalid argument!")

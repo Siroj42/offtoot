@@ -10,7 +10,13 @@ A command line mastodon client inspired by [offpunk](https://sr.ht/~lioploum/off
   - [x] Offpunk-style links & hashtags
 - [] Ability to delete old entries
 - [] Looking up if posts in current tour have been edited
-- [] Sync depth (=comments/posts that the downloaded post is a reply to)
+- [x] Sync depth (=comments/posts that the downloaded post is a reply to)
+    - [] Depth limiting?
+    - [] Download replies to ancestors?
+    - [] Show other account's comments
+- [x] Threads
+    - [] Communicate that post is part of a thread
+    - [] Don't add all posts from a thread to the tour
 - [x] Prettier output
 - [x] Image handling
   - [x] Image downloading
